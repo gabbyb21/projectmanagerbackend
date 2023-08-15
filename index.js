@@ -70,6 +70,7 @@ app.delete('/projects/:id', async( req, res) => {
   }
 })
 
-app.listen(4000, () => {
+pool.connect()
+app.listen(process.env.PORT || 4000, () => {
   console.log('server has started on port 4000');
 });
