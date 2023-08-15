@@ -1,9 +1,16 @@
-const Pool = require('pg').Pool;
+const Client = require('pg').Client
 
-const pool = new Pool({
-  host: 'localhost',
-  port: 5432,
-  database: 'projects'
-});
+const dbConfig = {
+	connectionString: 'postgresql://localhost:5432/projects',
+}
 
-module.exports = pool;
+if(process.env.DATABASE_URL){
+	dbConfig.ssl = { rejectUnauthorized: false }
+	dbConfig.connectionString = process.env.DATABASE_URL
+
+}
+
+const client = new Client(dbConfig)
+
+
+module.exports = client;
