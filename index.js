@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const pool = require('./db');
+require('dotenv').config();
 
 //middleware
 app.use(cors());
@@ -10,6 +11,7 @@ app.use(express.json());
 //routes
 
 //create project
+pool.connect();
 app.post('/projects', async(req, res) => {
   try {
     const { title, description, status, github_link, app_link } = req.body;
@@ -70,7 +72,7 @@ app.delete('/projects/:id', async( req, res) => {
   }
 })
 
-pool.connect()
+
 app.listen(process.env.PORT || 4000, () => {
   console.log('server has started on port 4000');
 });
