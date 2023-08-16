@@ -1,16 +1,19 @@
-const Client = require('pg').Client
+const Pool = require('pg').Pool;
+require('dotenv').config();
 
-const dbConfig = {
-	connectionString: 'postgresql://localhost:5432/projects',
-}
+// const pool = new Pool({
+//   host: 'localhost',
+//   port: 5432,
+//   database: 'projects'
+// });
 
-if(process.env.DATABASE_URL){
-	dbConfig.ssl = { rejectUnauthorized: false }
-	dbConfig.connectionString = process.env.DATABASE_URL
+const isProduction = process.env.NODE_ENV === "production";
+const connectionString = `postgresql://${process.env.PG_USER}:${process.env.PG_PASSWORD}@${process.env.PG_HOST}:${process.env.PG_PORT}/${process.env.PG_DATABASE}`;
+const pool = new Pool({
+    connectionString: isProduction ? process.env.DATABASE_URL : connectionString,
+    ssl: {
+        rejectUnauthorized: false,
+    },
+});
 
-}
-
-const client = new Client(dbConfig)
-
-
-module.exports = client;
+module.exports = pool;

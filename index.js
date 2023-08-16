@@ -11,7 +11,7 @@ app.use(express.json());
 //routes
 
 //create project
-pool.connect();
+
 app.post('/projects', async(req, res) => {
   try {
     const { title, description, status, github_link, app_link } = req.body;
